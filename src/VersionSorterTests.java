@@ -20,7 +20,7 @@ public class VersionSorterTests
     void GivenListOfLength5ShouldSortList()
     {
         String[] input = {"1.1.2","1.0","1.3.3","1.0.12","1.0.2"};
-        String[] expectedOut = {"1.0","1.0.2", "1.1.2","1.3.3"};
+        String[] expectedOut = {"1.0","1.0.2","1.0.12","1.1.2","1.3.3"};
         Setup();
         String[] list = sorter.OrganizeVersionList(input);
         Assertions.assertArrayEquals(expectedOut,list);
@@ -42,5 +42,13 @@ public class VersionSorterTests
         Setup();
         int expectedOutput = 1;
         Assertions.assertEquals(expectedOutput, sorter.CompareVersions(string1, string2));
+    }
+    @Test
+    void GivenTwoSimilarStringShouldCompareThem1()
+    {
+        String string1 = "100";
+        String string2 = "1";
+        Setup();
+        Assertions.assertTrue( Integer.parseInt(string1) > Integer.parseInt(string2));
     }
 }

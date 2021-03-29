@@ -26,7 +26,7 @@ public class VersionSorter
     {
         String pivot = list[endIndex];
         int pivotIndex = startIndex;
-        for(int i = startIndex; i < endIndex; i++)
+        for(int i = startIndex; i <= endIndex-1; i++)
         {
             if(CompareVersions(list[i],pivot) <= 0)
             {
@@ -47,36 +47,49 @@ public class VersionSorter
 
     public int CompareVersions(String string1, String string2)
     {
+        String firstString = string1;
+        String secondString = string2;
         int smallerWord = -1;
-        int largerIndex = Math.max(string1.length(), string2.length());
-        for(int i = 0; i < largerIndex-1 && smallerWord == -1; i++)
+        while(smallerWord == -1 && firstString.length() > 0 && secondString.length() > 0)
         {
-            if(i == string1.length())
-            {
-                smallerWord = 1;
-            }
-            else if(i == string2.length())
+            String version1;
+            String version2;
+            if(firstString.contains("."))
+                version1 = firstString.substring(0, firstString.indexOf("."));
+            else
+                version1 = firstString;
+
+            if(secondString.contains("."))
+                version2 = secondString.substring(0, secondString.indexOf("."));
+            else
+                version2 = secondString;
+
+            if(Integer.parseInt(version1) > Integer.parseInt(version2))
             {
                 smallerWord = 2;
             }
-            else if(string1.charAt(i) > string2.charAt(i))
-            {
-                smallerWord = 2;
-            }
-            else if(string1.charAt(i) < string2.charAt(i))
+            else if(Integer.parseInt(version1) < Integer.parseInt(version2))
             {
                 smallerWord = 1;
             }
+            else
+            {
+                if (!firstString.contains("."))
+                    smallerWord = 1;
+                else if (!secondString.contains("."))
+                    smallerWord = 2;
+            }
+
+            firstString = firstString.substring(firstString.indexOf(".")+1);
+            secondString = secondString.substring(secondString.indexOf(".")+1);
         }
+        int result;
         if(smallerWord == -1)
-        {
-            return  0;
-        }
+            result = 0;
         else if(smallerWord == 1)
-        {
-            return -1;
-        }
+            result = -1;
         else
-            return 1;
+            result = 1;
+        return result;
     }
 }
