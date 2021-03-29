@@ -1,5 +1,8 @@
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.util.Set;
+
 public class VersionSorterTests
 {
     VersionSorter sorter;
@@ -32,5 +35,41 @@ public class VersionSorterTests
         Setup();
         String[] list = sorter.OrganizeVersionList(input);
         Assertions.assertArrayEquals(expectedOut,list);
+    }
+    @Test
+    void GivenTwoSimilarVersionsShouldCompareVersions()
+    {
+        String in1 = "1.0";
+        String in2 = "1.0.0";
+        Setup();
+        int expectedResult = -1;
+        Assertions.assertTrue(sorter.compareVersions(in1, in2) <= expectedResult);
+    }
+    @Test
+    void GivenTwoDifferentRevisionVersionsShouldCompareVersions()
+    {
+        String in1 = "0.0.0";
+        String in2 = "0.0.1";
+        Setup();
+        int expectedResult = -1;
+        Assertions.assertTrue(sorter.compareVersions(in1, in2) <= expectedResult);
+    }
+    @Test
+    void GivenTwoDifferentMinorVersionsShouldCompareVersions()
+    {
+        String in1 = "1.2";
+        String in2 = "1.1";
+        Setup();
+        int expectedResult = 1;
+        Assertions.assertTrue(sorter.compareVersions(in1, in2) >= expectedResult);
+    }
+    @Test
+    void GivenTwoEqualVersionsShouldCompareVersions()
+    {
+        String in1 = "1.0";
+        String in2 = "1.0";
+        Setup();
+        int expectedResult = 0;
+        Assertions.assertTrue(sorter.compareVersions(in1, in2) == expectedResult);
     }
 }
